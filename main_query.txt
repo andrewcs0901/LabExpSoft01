@@ -1,9 +1,16 @@
 query RQ01 {
-  search(query: "stars:>100", type: REPOSITORY, first: 100) {
+  search(query: "stars:>100", type: REPOSITORY, first: 100, after: null) {
+    pageInfo{
+      hasNextPage
+      endCursor
+    }
     nodes {
       ... on Repository {
         createdAt
-        issues{
+        open_issues: issues{
+          totalCount
+        }
+        closed_issues: issues(states: CLOSED) {
           totalCount
         }
         name
@@ -14,9 +21,10 @@ query RQ01 {
         pullRequests(states: MERGED) {
           totalCount
         }
-        releases{
+        releases {
           totalCount
         }
+        url
       }
     }
   }
