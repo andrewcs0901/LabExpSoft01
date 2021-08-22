@@ -2,9 +2,12 @@ import csv
 from datetime import date, datetime
 import requests
 
+
 currentDate = date(2021, 8, 31)
 txt_query = 'main_query.txt'
 token = open('env', 'r').read()
+
+
 
 
 def format_data(key, value):

@@ -6,6 +6,7 @@ query RQ01 {
     }
     nodes {
       ... on Repository {
+        stargazerCount
         createdAt
         open_issues: issues{
           totalCount
