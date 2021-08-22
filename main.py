@@ -1,4 +1,4 @@
-import csv
+import pandas as pd
 from datetime import date, datetime
 import requests
 
@@ -6,9 +6,7 @@ import requests
 currentDate = date(2021, 8, 31)
 txt_query = 'main_query.txt'
 token = open('env', 'r').read()
-
-
-
+output = open(f'result_{txt_query}.csv', 'w')
 
 def format_data(key, value):
     if key == 'createdAt' or key == 'updatedAt':
@@ -46,26 +44,44 @@ def create_csv_rows(json_row, aux=''):
 def write_csv_rows(json_row):
     output.write(create_csv_rows(json_row[0]))
 
+def drop_duplicates():
+    print('Dropping duplicated rows')
+    df = pd.read_csv('result_main_query.txt.csv')
+    result_df = df.drop_duplicates(subset=['url'], keep='first')
+    result_df.to_csv('final_result.csv')
+    return result_df
 
-print('starting github graphql query...')
-query = open(txt_query, 'r').read()
-output = open(f'result_{txt_query}.csv', 'w')
-page = 0
-previous_cursor = 'null'
-headers = dict(Authorization=f'bearer {token}')
-while page < 10:
-    r = requests.post('https://api.github.com/graphql', headers=headers, json={'query': query})
-    if r.status_code == 200:
-        print(f'page: {page}')
-        resJson = r.json()['data']['search']
-        nodes = resJson['nodes']
-        end_cursor = resJson['pageInfo']['endCursor']
-        if page == 0:
-            write_csv_rows(nodes)
-            query = query.replace(previous_cursor, f'"{end_cursor}"')
-        else:
-            query = query.replace(previous_cursor, end_cursor)
-        previous_cursor = end_cursor
-        read_json(nodes)
-        page += 1
-print('query executed')
+
+def process_csv():
+    print('starting github graphql query...')
+    query = open(txt_query, 'r').read()
+    page = 0
+    previous_cursor = 'null'
+    headers = dict(Authorization=f'bearer {token}')
+    while page < 10:
+        r = requests.post('https://api.github.com/graphql', headers=headers, json={'query': query})
+        if r.status_code == 200:
+            print(f'page: {page}')
+            resJson = r.json()['data']['search']
+            nodes = resJson['nodes']
+            end_cursor = resJson['pageInfo']['endCursor']
+            if page == 0:
+                write_csv_rows(nodes)
+                query = query.replace(previous_cursor, f'"{end_cursor}"')
+            else:
+                query = query.replace(previous_cursor, end_cursor)
+            previous_cursor = end_cursor
+            read_json(nodes)
+            page += 1
+    print('query executed')
+
+
+
+def main_process():
+    process_csv()
+    result_df = drop_duplicates()
+    quantityOfRowsInNotDuplicatedFile = result_df['stargazerCount'].count()
+    print(f"Quantity of rows in dropped csv: {quantityOfRowsInNotDuplicatedFile}")
+
+if __name__ == '__main__':
+    main_process()
