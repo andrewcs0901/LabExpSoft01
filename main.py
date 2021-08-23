@@ -44,20 +44,26 @@ def create_csv_rows(json_row, aux=''):
 def write_csv_rows(json_row):
     output.write(create_csv_rows(json_row[0]))
 
-def drop_duplicates():
+def drop_duplicates(df):
     print('Dropping duplicated rows')
-    df = pd.read_csv('result_main_query.txt.csv')
+
     result_df = df.drop_duplicates(subset=['url'], keep='first')
+    #if(isTest): 
+       # result_df.drop(df.tail(5).index,inplace=True) #
     result_df.to_csv('final_result.csv')
     return result_df
 
 
-def process_csv():
+def process_csv(isDuplicated, quantity, previous_cursor, last_quantity):
     print('starting github graphql query...')
     query = open(txt_query, 'r').read()
     page = 0
     previous_cursor = 'null'
     headers = dict(Authorization=f'bearer {token}')
+    if(isDuplicated and previous_cursor):
+        print('Changing query...')
+        page = 9
+        query = query.replace(f'first: {last_quantity}', f"first: {quantity}")
     while page < 10:
         r = requests.post('https://api.github.com/graphql', headers=headers, json={'query': query})
         if r.status_code == 200:
@@ -74,14 +80,22 @@ def process_csv():
             read_json(nodes)
             page += 1
     print('query executed')
+    return previous_cursor, quantity
 
 
+def main_process(isDuplicated = False, quantity = 100, previous_cursor = '', last_quantity = 100):
+    previous_cursor, last_quantity = process_csv(isDuplicated, quantity, previous_cursor, last_quantity)
 
-def main_process():
-    process_csv()
-    result_df = drop_duplicates()
+    duplicated_csv_df = pd.read_csv('result_main_query.txt.csv')
+    result_df = drop_duplicates(duplicated_csv_df)
+    
     quantityOfRowsInNotDuplicatedFile = result_df['stargazerCount'].count()
     print(f"Quantity of rows in dropped csv: {quantityOfRowsInNotDuplicatedFile}")
+
+    if quantityOfRowsInNotDuplicatedFile != 1000:
+        quantity = 1000 - quantityOfRowsInNotDuplicatedFile
+        print(f'Remaning rows to process: {quantity}')
+        main_process(True, quantity, previous_cursor, last_quantity )
 
 if __name__ == '__main__':
     main_process()
