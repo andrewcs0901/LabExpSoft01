@@ -24,6 +24,9 @@ query RQ01 {
         releases {
           totalCount
         }
+        stargazers {
+          totalCount
+        }
         url
       }
     }
