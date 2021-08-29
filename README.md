@@ -57,5 +57,10 @@ O presente trabalho tem o objetivo de analisar os 1000 repositórios mais popula
 # Metodologia
 
 # Resultados
+- ## Pergunta 1:  Sistemas populares são maduros/antigos?   
+\
+![alt text](./images/question1.png)
+
+A resposta para essa pergunta é não. É possível perceber através do gráfico de "Soma de estrelas por ano" que os repositórios mais antigos não necessariamente possuem mais estrelas, haja vista que esses surgiram em meados de 2015. Além disso, é possível percerber no gráfico box plot algumas  informações como a idade mínima(115 dias), mediana(2354 dias) e máxima(4919)
 
 # Discussão
