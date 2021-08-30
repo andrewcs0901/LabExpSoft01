@@ -55,7 +55,7 @@ O presente trabalho tem o objetivo de analisar os 1000 repositórios mais popula
 
 - ## Pergunta 7: Sistemas escritos em linguagens mais populares recebem mais contribuição externa, lançam mais releases e são atualizados com mais frequência?
     - Métrica: categoria de linguagens de programação por número de contribuição externa, releases e atualização do projeto
-    - Supõem-se que nesses projetos com as linguagens mais utilizadas possuam uma grande quantidade contribuintes, releases e atualização do projeto, pois há mais pessoas capazes de se interessar e contribuir nesses projetos.
+    - Supõem-se que nesses projetos com as linguagens mais utilizadas possuam uma grande quantidade de contribuintes, releases e atualização do projeto, pois há mais pessoas capazes de se interessar e contribuir nesses projetos.
 # Metodologia
 
 Para a realização deste trabalho conduziu-se por meio 4 etapas: levantamento de suposições, construção das consultas, coletas dos dados e a análise dos resultados
@@ -129,9 +129,12 @@ Analizando os dados acima, é possível perceber que de fato os repositórios po
 ![alt text](./images/question3.1.png)
 \
 ![alt text](./images/question4.1.png)
-question4.1
-\
 
+Quanto aos pull requests desses repositórios, nota-se que há algumas linguagens se sobressaem, como as tradicionais C++, Python e Java, e também o aumento do uso da linguagem C e Typescript.
+
+Analisando a quantidade de releases, percebe-se que também há linguagens já estabelecidas, mas é válido ressaltar que as primeiras colocadas são Typescript e Go que são linguagens mais recentes se comparada com as demais
+
+Em relãção à frequência de atualizações, é percebido que há algumas linguagens não tão comuns, como Swift e HTML, entretanto também há linguagens muito populares.
 # Discussão
 
 - ## Pergunta 1:  Sistemas populares são maduros/antigos?
@@ -156,3 +159,6 @@ question4.1
 - ## Pergunta 6: Sistemas populares possuem um alto percentual de issues fechadas?
 
   - A hipótese foi justificada ao se ter grandes taxas de issues fechadas nesses repositórios, mostrando que há um grande envolvimento em volta desses repositórios.
+
+- ## Pergunta 7: Sistemas escritos em linguagens mais populares recebem mais contribuição externa, lançam mais releases e são atualizados com mais frequência?
+  - Como se era esperado,  as linguagens de programção mais populares foram muito usadas nesses projetos, e também é possível notar o crescimento de algumas outras linguagens como GO e Typescript.
